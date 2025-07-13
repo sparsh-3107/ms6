@@ -2,594 +2,388 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1"/>
-  <title>Sparsh ❤️ Maya - Happy Birthday!</title>
-  <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Gloria+Hallelujah&family=Poppins:wght@300;500&display=swap" rel="stylesheet"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Happy Birthday Maya 🎉</title>
+  <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Gloria+Hallelujah&family=Poppins:wght@300;500&display=swap" rel="stylesheet" />
   <style>
-    * { margin:0; padding:0; box-sizing:border-box; }
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
     body {
-      font-family: Poppins, sans-serif;
-      background: linear-gradient(120deg, #FFECEC, #FFF5F8);
-      color: #5A2A3F;
+      font-family: "Poppins", sans-serif;
+      background: linear-gradient(120deg, #ffe4e1, #fff0f5);
       overflow-x: hidden;
-      transition: background .4s, color .4s;
+      transition: all 0.3s ease-in-out;
+      position: relative;
+      color: #6b2c2c;
     }
     body.dark {
-      background: linear-gradient(120deg, #2C2A36, #3C3A4E);
-      color: #E1DAEA;
+      background: linear-gradient(120deg, #1e1e2f, #2a2a40);
+      color: #ffe4e1;
     }
-    #coupleTitle {
-      position: fixed; top: 1rem; left: 50%;
-      transform: translateX(-50%);
-      font-family: 'Great Vibes', cursive;
-      font-size: 2.2rem;
-      animation: heartbeat 3s infinite;
-      z-index: 1001;
+    canvas#starsCanvas {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 10;
+      display: none;
     }
-    @keyframes heartbeat {
-      0%,100% { transform: translateX(-50%) scale(1); }
-      50% { transform: translateX(-50%) scale(1.04); }
+    body.dark canvas#starsCanvas {
+      display: block;
     }
-
-    button {
-      font-family: inherit;
-      cursor: pointer;
-      transition: transform .2s, box-shadow .2s;
+    .lock-screen, .slider, .popup {
+      display: none;
     }
-    button:hover, button:focus {
-      transform: scale(1.03);
-      box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+    .lock-screen.active, .slider.active, .popup.show {
+      display: flex;
     }
-
-    .toggle-btn {
-      position: fixed; top: 1rem; right: 1rem;
-      background: #FF6B6B; color: #fff;
-      border: none; padding: .6rem 1rem; border-radius: .6rem;
-      box-shadow: 0 0 8px rgba(255,107,107,0.5);
-      z-index: 1000;
-    }
-
     .lock-screen {
-      position: fixed; inset: 0;
-      background: rgba(0,0,0,0.3);
-      display: flex; flex-direction: column;
-      align-items: center; justify-content: center;
-      text-align: center; z-index: 500;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      text-align: center;
+      padding: 2rem;
+      color: #ff69b4;
     }
     .lock-screen h2 {
-      font-family: 'Great Vibes', cursive;
-      font-size: 3rem; color: #E05194;
-      margin-bottom: .8rem;
+      font-size: 2.5rem;
+      font-family: "Great Vibes", cursive;
+      margin-bottom: 1rem;
+      animation: pulse 2s infinite;
     }
     .lock-screen p {
-      font-family: 'Gloria Hallelujah', cursive;
+      font-family: "Gloria Hallelujah", cursive;
       font-size: 1.2rem;
-      margin-bottom: .8rem;
-      color: #C44F8B;
     }
     .lock-screen input {
-      padding: .6rem; font-size: 1.4rem;
-      width: 120px; text-align: center;
-      border: 2px solid #E05194;
-      border-radius: .5rem;
+      font-size: 1.5rem;
+      padding: 0.6rem 1rem;
+      border-radius: 0.5rem;
+      border: 2px solid #ff69b4;
+      text-align: center;
+      width: 100px;
+      margin-top: 1rem;
     }
     .lock-screen button {
-      margin-top: 1rem; padding: .8rem 2rem;
-      background: linear-gradient(90deg, #FF7E8A, #FF5A7A);
-      color: #fff; border:none; border-radius:2rem;
+      margin-top: 1rem;
+      background: linear-gradient(to right, #ff4b2b, #ff416c);
+      color: white;
+      border: none;
+      padding: 0.8rem 2rem;
+      border-radius: 2rem;
+      font-size: 1rem;
+      cursor: pointer;
     }
-    .lock-screen .error {
-      margin-top: .5rem; color: #D02E2E;
-      font-size: .9rem; visibility: hidden;
+    .error-msg {
+      color: red;
+      margin-top: 0.5rem;
+      display: none;
     }
-
-    .slider {
-      display: none; flex-direction: column;
-      align-items: center;
-      padding: 2rem 1rem; min-height: 100vh;
-      position: relative;
-    }
-    .slider.active { display: flex; }
-
     h1 {
-      font-family: 'Great Vibes', cursive;
-      font-size: 3rem;
-      margin-bottom: .5rem;
-      color: #D14F75;
+      font-family: "Great Vibes", cursive;
+      font-size: 3em;
+      text-align: center;
+      color: #ff4081;
+      margin-top: 1rem;
     }
     .quote {
-      font-style: italic;
-      color: #A02E60;
       text-align: center;
+      font-style: italic;
+      margin: 1rem auto;
       max-width: 600px;
-      margin-bottom: 1.5rem;
+      color: #cc3366;
     }
-
-    .section {
-      display: none;
+    .slider {
       flex-direction: column;
       align-items: center;
+      justify-content: center;
+      padding: 0 1rem 4rem;
+      min-height: 100vh;
+      position: relative;
+    }
+    .section {
+      display: none;
+      padding: 2rem;
+      min-height: 60vh;
+      justify-content: center;
+      align-items: center;
       text-align: center;
-      max-width: 700px;
-      margin-bottom: 2rem;
-      opacity: 0;
-      transform: translateY(20px);
-      transition: opacity .6s ease, transform .6s ease;
+      font-family: "Gloria Hallelujah", cursive;
+      font-size: 1.4rem;
+      line-height: 1.6;
+      user-select: none;
+      max-width: 650px;
+      margin: 0 auto;
+      color: inherit;
     }
     .section.active {
       display: flex;
-      opacity: 1;
-      transform: translateY(0);
+      animation: fadeIn 1s ease;
+      flex-direction: column;
     }
-
-    .nav-btn {
-      position: fixed; bottom: 1rem;
-      padding: .8rem 1.2rem;
-      background: #F7A1C4;
-      color: #3C2233;
+    .section p {
+      color: inherit;
+      user-select: none;
+    }
+    #voiceBtn {
+      background: #ff80ab;
+      color: white;
       border: none;
+      padding: 0.5rem 1.2rem;
       border-radius: 1rem;
-      box-shadow: 0 0 8px rgba(247,161,196,0.5);
-      font-family: inherit;
-    }
-    #prevBtn { left: 1rem; }
-    #nextBtn { right: 1rem; }
-
-    .voice-btn {
-      margin-top: 1rem;
-      padding: .5rem 1.2rem;
-      background: #FF9EBF;
-      color: #3C2233;
-      border: none;
-      border-radius: 1rem;
-      animation: pulse 2s infinite;
-    }
-    @keyframes pulse {
-      0%,100% { transform: scale(1); }
-      50% { transform: scale(1.05); }
-    }
-
-    .reveal-btn {
-      margin-top: 2rem;
-      padding: 1rem 2rem;
-      background: #FF9EBF;
-      color: #3C2233;
-      border: none;
-      border-radius: 1rem;
-      animation: pulse 1.8s infinite;
-    }
-
-    .scratch-area {
-      position: relative;
-      width: 80%; max-width: 380px;
-      height: 200px;
-      background: #EEE;
-      border-radius: 1rem;
-      margin: 1rem auto;
-      overflow: hidden;
-    }
-    #scratchCanvas {
-      position: absolute;
-      top: 0; left: 0;
-      width: 100%; height: 100%;
       cursor: pointer;
+      animation: pulse 1.8s infinite;
+      box-shadow: 0 0 8px #ff80ab;
+      font-family: "Gloria Hallelujah", cursive;
+      font-size: 1rem;
+      user-select: none;
+      transition: background 0.3s ease;
+      display: inline-block;
+      min-width: 140px;
+      margin: 0 auto;
     }
-    #scratchMsg {
-      position: absolute;
-      top: 50%; left: 50%;
-      transform: translate(-50%, -50%);
-      font-family: 'Gloria Hallelujah', cursive;
-      font-size: 1.1rem;
-      text-align: center;
-    }
-
-    #polaroidWall {
-      display: flex; flex-wrap: wrap;
-      gap: 1rem;
-      justify-content: center;
-      margin: 1rem auto;
-    }
-    .polaroid {
-      width: 120px; height: 160px;
-      background: #fff;
-      padding: .4rem;
-      border-radius: .6rem;
-      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
-      transition: transform .3s ease, box-shadow .3s;
-    }
-    .polaroid:hover {
-      transform: scale(1.05);
-      box-shadow: 0 6px 18px rgba(0,0,0,0.2);
-    }
-    .polaroid img {
-      width: 100%; height: 100%; object-fit: cover;
-      border-radius: .4rem;
-    }
-    .caption {
-      margin-top: .3rem;
-      text-align: center;
-      font-size: .9rem;
-      color: #6A3A51;
-    }
-
-    #photoSlideshow {
-      position: relative;
-      width: 100%; max-width: 500px;
-      height: 300px;
-      border-radius: 1rem;
-      overflow: hidden;
-      margin: 1rem auto;
-    }
-    #photoSlideshow img {
-      position: absolute; width: 100%; height: 100%;
-      object-fit: cover;
-      opacity: 0;
-      transition: opacity 1s ease;
-    }
-    #photoSlideshow img.active {
-      opacity: 1;
-    }
-    #photoCaption {
-      margin-top: .5rem;
-      font-family: 'Gloria Hallelujah', cursive;
-      color: #6A3A51;
-    }
-
-    .popup {
-      position: fixed; top: 50%; left: 50%;
-      transform: translate(-50%, -50%);
-      background: #FFF;
-      color: #5A2A3F;
-      padding: 2rem;
-      border-radius: 1rem;
-      box-shadow: 0 0 20px rgba(247,161,196,0.7);
-      max-width: 90vw; max-height: 80vh;
-      overflow: auto; display: none;
-      flex-direction: column; align-items: center;
-      z-index: 1002;
-    }
-    .popup.show { display: flex; }
-    body.dark .popup {
-      background: #3C3A4E;
-      color: #E1DAEA;
-      box-shadow: 0 0 25px rgba(122,90,155,0.7);
-    }
-    .letter-text {
-      font-family: 'Gloria Hallelujah', cursive;
-      white-space: pre-wrap;
-      font-size: 1.3rem;
-    }
-    .signature {
-      margin-top: 1rem;
-      font-family: 'Great Vibes', cursive;
-      font-size: 2rem;
-      opacity: 0;
-      animation: candleFlicker 1.2s infinite;
-    }
-    .popup button {
-      margin-top: 1rem;
-      padding: .6rem 1.2rem;
-      background: #FF9EBF;
-      color: #3C2233;
-      border: none;
-      border-radius: 1rem;
-    }
-
-    @keyframes candleFlicker {
-      0%,100% { opacity: 1; }
-      50% { opacity: .85; }
-    }
-
-    #confettiCanvas {
-      position: fixed;
-      top: 0; left: 0;
-      width: 100%; height: 100%;
-      pointer-events: none;
-      z-index: 999;
-    }
-
-    .balloon, .rose, .heart, .sparkle, .snowflake {
-      position: fixed; font-size: 1.5rem;
-      opacity: 0.9;
-      pointer-events: none;
-    }
-    .balloon { font-size: 2rem; animation: flyUp 10s linear infinite; }
-    .rose { animation: flyUp 8s linear infinite; }
-    .heart { animation: flyUp 5s linear infinite; color: #E05194; }
-    .sparkle { animation: flyUp 4s linear infinite; color: #FFD27F; }
-    .snowflake { animation: flyUp 6s linear infinite; color: #CDEBFE; }
-    .star {
-      position: fixed;
-      width: 2px; height: 2px;
-      background: #FFF;
-      border-radius: 50%;
-      box-shadow: 0 0 6px #FFF;
-      animation: starTwinkle 2s ease-in-out infinite;
-    }
-    @keyframes flyUp {
-      0% { transform: translateY(0); }
-      100% { transform: translateY(-120vh); opacity: 0; }
-    }
-    @keyframes starTwinkle {
-      0%,100% { opacity: 0; }
-      50% { opacity: 1; }
+    #voiceBtn:hover {
+      background: #ff4b80;
+      box-shadow: 0 0 18px #ff4b80;
     }
   </style>
 </head>
 <body>
+  <button class="toggle-theme" onclick="toggleTheme()">🌓 Toggle Theme</button>
 
-  <div id="coupleTitle">Sparsh ❤️ Maya</div>
-  <button class="toggle-btn">🌓 Toggle Theme</button>
-  <audio id="bgMusic" loop preload="auto" src="https://cdn.pixabay.com/download/audio/2023/03/06/audio_f2119a6a1c.mp3"></audio>
+  <audio id="bgMusic" autoplay loop preload="auto">
+    <source src="https://cdn.pixabay.com/download/audio/2023/03/06/audio_f2119a6a1c.mp3" type="audio/mpeg" />
+  </audio>
 
-  <div class="lock-screen">
+  <div class="lock-screen active" id="lockScreen">
     <h2>🔒 Secret Gateway</h2>
     <p>Enter the code to unlock my heart 💕</p>
-    <input id="codeInput" maxlength="3" placeholder="💗💗💗" />
-    <button onclick="checkCode()">❤️ Unlock</button>
-    <p class="error">❌ Wrong code!</p>
+    <input type="text" id="codeInput" maxlength="3" placeholder="💗💗💗" />
+    <br />
+    <button onclick="checkCode()">❤️ Unlock My Heart</button>
+    <p class="error-msg" id="errorMsg">❌ Wrong code, try again!</p>
   </div>
 
-  <div class="slider">
+  <div class="slider" id="slider">
     <h1>Happy Birthday Maya 🎉</h1>
     <p class="quote">"You make the world brighter just by being in it."</p>
 
-    <!-- Text Slides -->
-    <div class="section active">🎂 Today, the world celebrates YOU—my sunshine, my joy.</div>
-    <div class="section">🌌 Your beauty is rivaled only by the wonders of your soul.</div>
-    <div class="section">🌟 My life began to glow the moment you appeared in it.</div>
-    <div class="section">🎶 Your laughter is my favorite melody. ❤️</div>
-    <div class="section">🦋 In your grace, I find my peace every single day.</div>
+    <div class="section active">🎂 On this special day, the universe pauses to celebrate you. Your existence adds meaning to mine.</div>
+    <div class="section">🌌 You're not just beautiful on the outside, but breathtaking within. Today, we celebrate all that you are. 💖</div>
+    <div class="section">🌠 My world began spinning in color the day you walked into it. You are my life. 🥺</div>
+    <div class="section">🎶 Your laughter is the rhythm I live for. I'd write your name on every heartbeat. ❤️</div>
+    <div class="section">🦋 You are grace wrapped in stardust. I fall for you every single day. 🌷</div>
 
-    <!-- Voice Slide -->
+    <!-- Voice Message Slide -->
     <div class="section">
-      <p>🔊 Tap to hear my voice</p>
-      <p>I love you beyond time, beyond everything 💕</p>
-      <button id="voiceBtn" class="voice-btn">▶️ Play Voice</button>
-      <audio id="voiceMsg" src="YOUR_VOICE_MESSAGE.mp3"></audio>
+      <p style="font-size: 1.5rem; margin-bottom: 0.5rem;">🔊 Tap to hear my voice</p>
+      <p style="font-size: 1.2rem; margin-bottom: 2rem;">Thank you for being the most incredible person in my life. I love you beyond time, beyond everything 💕</p>
+      <button id="voiceBtn">▶️ Play Voice Message</button>
+      <audio id="voiceMsg" src="https://cdn.pixabay.com/download/audio/2022/08/28/audio_12345.mp3" preload="auto"></audio>
     </div>
 
-    <!-- Scratch Card -->
+    <!-- Final Slide with Love Letter -->
     <div class="section">
-      <p>🎁 Scratch to reveal your surprise:</p>
-      <div class="scratch-area">
-        <canvas id="scratchCanvas"></canvas>
-        <div id="scratchMsg">You make my world magical 💖</div>
+      With all my heart and soul, forever yours,<br /><strong>sparsh</strong> 💌
+      <div style="margin-top: 2rem">
+        <button class="reveal-btn" onclick="showPopup(); firework()">💌 Reveal Love Letter 💌</button>
       </div>
     </div>
 
-    <!-- Polaroid Wall -->
-    <div class="section">
-      <p>🎞️ Precious moments together:</p>
-      <div id="polaroidWall">
-        <div class="polaroid"><img src="https://via.placeholder.com/120x160"/><div class="caption">You & Me</div></div>
-        <div class="polaroid"><img src="https://via.placeholder.com/120x160"/><div class="caption">Laugh Forever</div></div>
-        <div class="polaroid"><img src="https://via.placeholder.com/120x160"/><div class="caption">Best Hug Ever</div></div>
-      </div>
-    </div>
+    <!-- Navigation Buttons -->
+    <button class="next-btn" style="left: 1rem" onclick="prevSlide()" id="prevBtn">⬅️ Prev</button>
+    <button class="next-btn" style="right: 1rem" onclick="nextSlide()" id="nextBtn">Next ➡️</button>
 
-    <!-- Photo Slideshow -->
-    <div class="section">
-      <p>📸 Cherished memories:</p>
-      <div id="photoSlideshow">
-        <img src="https://via.placeholder.com/500x300" class="active"/>
-        <img src="https://via.placeholder.com/500x300/ffcccc"/>
-        <img src="https://via.placeholder.com/500x300/ffd1dc"/>
-      </div>
-      <div id="photoCaption">Our Trip 🌄</div>
-    </div>
-
-    <!-- Love Letter -->
-    <div class="section">
-      <p>Forever yours,<br/><strong>sparsh</strong> 💌</p>
-      <button class="reveal-btn" onclick="showPopup()">💌 Reveal Love Letter</button>
-    </div>
-
-    <button id="prevBtn" class="nav-btn">⬅️ Prev</button>
-    <button id="nextBtn" class="nav-btn">Next ➡️</button>
     <div class="footer">© 2025 Made with ❤️ by Sparsh</div>
   </div>
 
-  <div class="popup">
-    <div class="letter-text"></div>
-    <span class="signature">— sparsh 💌</span>
+  <!-- Love Letter Popup -->
+  <div class="popup" id="popup">
+    <div class="letter-text" id="typedText"></div>
+    <span id="signature" class="signature" style="display: none;">— sparsh 💌</span>
     <button onclick="hidePopup()">Close</button>
   </div>
 
+  <!-- Effects Canvas -->
   <canvas id="confettiCanvas"></canvas>
+  <canvas id="starsCanvas"></canvas>
   <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
   <script>
-    const lock = document.querySelector('.lock-screen'),
-          slider = document.querySelector('.slider'),
-          sections = slider.querySelectorAll('.section'),
-          prevBtn = document.getElementById('prevBtn'),
-          nextBtn = document.getElementById('nextBtn'),
-          codeInput = document.getElementById('codeInput'),
-          err = lock.querySelector('.error'),
-          bgMusic = document.getElementById('bgMusic'),
-          voiceMsg = document.getElementById('voiceMsg'),
-          voiceBtn = document.getElementById('voiceBtn'),
-          popup = document.querySelector('.popup'),
-          letterText = popup.querySelector('.letter-text'),
-          signature = popup.querySelector('.signature'),
-          ctx = document.getElementById('scratchCanvas').getContext('2d'),
-          slideshowImgs = document.querySelectorAll('#photoSlideshow img'),
-          photoCaption = document.getElementById('photoCaption');
+    const sections = document.querySelectorAll(".section");
+    const prevBtn = document.getElementById("prevBtn");
+    const nextBtn = document.getElementById("nextBtn");
+    const voiceBtn = document.getElementById("voiceBtn");
+    const voiceMsg = document.getElementById("voiceMsg");
+    const bgMusic = document.getElementById("bgMusic");
 
-    let currentIndex = 0, slideShowIndex = 0;
+    let current = 0;
 
-    function showSlide(i) {
-      currentIndex = i;
-      sections.forEach((s, idx) => {
-        s.classList.toggle('active', idx === i);
-      });
-      prevBtn.disabled = i === 0;
-      nextBtn.disabled = i === sections.length - 1;
-    }
-
-    window.checkCode = function() {
-      if (codeInput.value.trim() === '143') {
-        lock.style.display = 'none';
-        slider.classList.add('active');
-        bgMusic.play().catch(() => {});
+    function checkCode() {
+      const code = document.getElementById("codeInput").value.trim();
+      if (code === "143") {
+        document.getElementById("lockScreen").classList.remove("active");
+        document.getElementById("slider").classList.add("active");
+        document.getElementById("errorMsg").style.display = "none";
+        playBgMusic();
         showSlide(0);
-        spawnBalloons();
-        spawnRoses();
-        spawnStars();
+        updateNavButtons();
       } else {
-        err.style.visibility = 'visible';
+        document.getElementById("errorMsg").style.display = "block";
       }
-    };
-
-    prevBtn.onclick = () => showSlide(currentIndex - 1);
-    nextBtn.onclick = () => showSlide(currentIndex + 1);
-
-    document.addEventListener('keydown', e => {
-      if (!slider.classList.contains('active')) {
-        if (e.key === 'Enter') checkCode();
-        return;
-      }
-      if (e.key === 'ArrowRight') nextBtn.click();
-      if (e.key === 'ArrowLeft') prevBtn.click();
-      if (e.key === 'Escape' && popup.classList.contains('show')) hidePopup();
-    });
-
-    document.querySelector('.toggle-btn').onclick = () => {
-      document.body.classList.toggle('dark');
-      localStorage.setItem('darkMode', document.body.classList.contains('dark'));
-    };
-    window.onload = () => {
-      if (localStorage.getItem('darkMode') === 'true') {
-        document.body.classList.add('dark');
-      }
-    };
-
-    function spawnBalloons() {
-      for (let i = 0; i < 6; i++) {
-        const b = document.createElement('div');
-        b.className = 'balloon';
-        b.textContent = '🎈';
-        b.style.left = Math.random() * 90 + 'vw';
-        b.style.animationDuration = (7 + Math.random() * 3) + 's';
-        document.body.appendChild(b);
-        b.addEventListener('animationend', () => b.remove());
-      }
-      setTimeout(spawnBalloons, 9000);
     }
 
-    function spawnRoses() {
-      for (let i = 0; i < 5; i++) {
-        const r = document.createElement('div');
-        r.className = 'rose';
-        r.textContent = '🌹';
-        r.style.left = Math.random() * 90 + 'vw';
-        r.style.animationDuration = (6 + Math.random() * 2) + 's';
-        document.body.appendChild(r);
-        r.addEventListener('animationend', () => r.remove());
+    function showSlide(index) {
+      current = index;
+      sections.forEach((s, i) => s.classList.toggle("active", i === index));
+      updateNavButtons();
+    }
+
+    function nextSlide() {
+      if (current < sections.length - 1) {
+        current++;
+        showSlide(current);
       }
-      setTimeout(spawnRoses, 8000);
     }
 
-    function spawnStars() {
-      if (!document.body.classList.contains('dark')) return;
-      const s = document.createElement('div');
-      s.className = 'star';
-      s.style.top = Math.random() * 50 + '%';
-      s.style.left = Math.random() * 100 + 'vw';
-      document.body.appendChild(s);
-      s.addEventListener('animationend', () => s.remove());
-      setTimeout(spawnStars, 2000);
+    function prevSlide() {
+      if (current > 0) {
+        current--;
+        showSlide(current);
+      }
     }
 
-    setInterval(() => {
-      const heart = document.createElement('div');
-      heart.className = 'heart'; heart.textContent = '💖'; heart.style.left = Math.random() * 100 + 'vw';
-      document.body.appendChild(heart);
-      heart.addEventListener('animationend', () => heart.remove());
-    }, 1400);
+    function updateNavButtons() {
+      prevBtn.disabled = current === 0;
+      nextBtn.disabled = current === sections.length - 1;
+    }
 
-    setInterval(() => {
-      const sparkle = document.createElement('div');
-      sparkle.className = 'sparkle'; sparkle.textContent = '✨'; sparkle.style.left = Math.random() * 100 + 'vw';
-      document.body.appendChild(sparkle);
-      sparkle.addEventListener('animationend', () => sparkle.remove());
-    }, 1800);
+    function showPopup() {
+      const popup = document.getElementById("popup");
+      const target = document.getElementById("typedText");
+      const signature = document.getElementById("signature");
 
-    setInterval(() => {
-      const snow = document.createElement('div');
-      snow.className = 'snowflake'; snow.textContent = '❄️'; snow.style.left = Math.random() * 100 + 'vw';
-      document.body.appendChild(snow);
-      snow.addEventListener('animationend', () => snow.remove());
-    }, 2000);
+      popup.classList.add("show");
+      target.innerText = "";
+      signature.style.display = "none";
 
-    voiceBtn.onclick = () => {
+      const text = `Dear Maya,\n\nYour love is the light in my world. Every second with you is magic.\nI promise to love you beyond limits. 💖`;
+
+      let i = 0;
+      function type() {
+        if (i < text.length) {
+          target.innerText += text.charAt(i);
+          i++;
+          setTimeout(type, 50);
+        } else {
+          setTimeout(() => {
+            signature.style.display = "inline-block";
+          }, 300);
+        }
+      }
+      setTimeout(type, 200);
+      pauseBgMusic();
+    }
+
+    function hidePopup() {
+      document.getElementById("popup").classList.remove("show");
+      playBgMusic();
+    }
+
+    function toggleTheme() {
+      document.body.classList.toggle("dark");
+    }
+
+    function firework() {
+      confetti({
+        particleCount: 150,
+        spread: 100,
+        origin: { y: 0.6 },
+      });
+    }
+
+    // Shooting stars in dark mode
+    const starCanvas = document.getElementById("starsCanvas");
+    const ctx = starCanvas.getContext("2d");
+    starCanvas.width = window.innerWidth;
+    starCanvas.height = window.innerHeight;
+
+    let stars = [];
+    function createStar() {
+      return {
+        x: Math.random() * starCanvas.width,
+        y: Math.random() * starCanvas.height,
+        radius: Math.random() * 1.5 + 0.2,
+        vx: -2 - Math.random() * 1.5,
+        vy: 2 + Math.random() * 1.5,
+        alpha: 1
+      };
+    }
+
+    function animateStars() {
+      ctx.clearRect(0, 0, starCanvas.width, starCanvas.height);
+      stars.forEach((star, i) => {
+        ctx.beginPath();
+        ctx.arc(star.x, star.y, star.radius, 0, 2 * Math.PI);
+        ctx.fillStyle = "rgba(255,255,255," + star.alpha + ")";
+        ctx.fill();
+        star.x += star.vx;
+        star.y += star.vy;
+        star.alpha -= 0.01;
+        if (star.alpha <= 0) stars[i] = createStar();
+      });
+      requestAnimationFrame(animateStars);
+    }
+
+    for (let i = 0; i < 60; i++) stars.push(createStar());
+    animateStars();
+
+    // Voice message logic
+    voiceBtn.addEventListener("click", () => {
       if (voiceMsg.paused) {
         voiceMsg.play();
         bgMusic.pause();
-        voiceBtn.textContent = '⏸️ Pause Voice';
+        voiceBtn.textContent = "⏸️ Pause Voice Message";
       } else {
         voiceMsg.pause();
         bgMusic.play();
-        voiceBtn.textContent = '▶️ Play Voice';
+        voiceBtn.textContent = "▶️ Play Voice Message";
       }
-    };
-    voiceMsg.onended = () => {
+    });
+
+    voiceMsg.addEventListener("ended", () => {
       bgMusic.play();
-      voiceBtn.textContent = '▶️ Play Voice';
-    };
+      voiceBtn.textContent = "▶️ Play Voice Message";
+    });
 
-    const canvas = document.getElementById('scratchCanvas');
-    canvas.width = canvas.clientWidth;
-    canvas.height = canvas.clientHeight;
-    const ictx = context = canvas.getContext('2d');
-    ictx.fillStyle = '#DDD';
-    ictx.fillRect(0, 0, canvas.width, canvas.height);
-    ictx.globalCompositeOperation = 'destination-out';
-    let isScratching = false;
-    canvas.onpointerdown = () => isScratching = true;
-    canvas.onpointerup = () => isScratching = false;
-    canvas.onpointermove = e => {
-      if (!isScratching) return;
-      const rect = canvas.getBoundingClientRect();
-      ictx.beginPath();
-      ictx.arc(e.clientX - rect.left, e.clientY - rect.top, 25, 0, 2 * Math.PI);
-      ictx.fill();
-    };
+    function pauseBgMusic() {
+      if (!bgMusic.paused) bgMusic.pause();
+    }
 
-    slideshowImgs.forEach(img => img.style.opacity = 0);
-    slideshowImgs[0].style.opacity = 1;
-    setInterval(() => {
-      slideshowImgs[slideShowIndex].style.opacity = 0;
-      slideShowIndex = (slideShowIndex + 1) % slideshowImgs.length;
-      slideshowImgs[slideShowIndex].style.opacity = 1;
-      const captions = ['Our Trip 🌄', 'Your Smile ❤️', 'Forever Us'];
-      photoCaption.textContent = captions[slideShowIndex];
-    }, 4000);
+    function playBgMusic() {
+      if (bgMusic.paused) bgMusic.play();
+    }
 
-    window.showPopup = () => {
-      slider.classList.remove('active');
-      popup.classList.add('show');
-      bgMusic.pause();
-      letterText.textContent = '';
-      signature.style.opacity = 0;
-      const msg = `Dear Maya,\n\nYour love is the light of my life...\nI promise to cherish you always. 💖`;
-      let i = 0;
-      (function type() {
-        if (i < msg.length) {
-          letterText.textContent += msg[i++];
-          setTimeout(type, 40);
-        } else {
-          signature.style.opacity = 1;
-          confetti({ particleCount: 150, spread: 80, origin: { y: 0.6 } });
-        }
-      })();
-    };
+    // Keyboard navigation
+    document.addEventListener("keydown", (e) => {
+      if (document.getElementById("lockScreen").classList.contains("active")) {
+        if (e.key === "Enter") checkCode();
+        return;
+      }
+      if (e.key === "ArrowRight") nextSlide();
+      if (e.key === "ArrowLeft") prevSlide();
+      if (e.key === "Escape" && document.getElementById("popup").classList.contains("show")) {
+        hidePopup();
+      }
+    });
 
-    window.hidePopup = () => {
-      popup.classList.remove('show');
-      slider.classList.add('active');
-      bgMusic.play();
-    };
+    // Init
+    updateNavButtons();
   </script>
 </body>
 </html>
